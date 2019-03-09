@@ -106,20 +106,20 @@ namespace UWPLockdownSample
             //LogModel message = new LogModel() { message = "check app files ..." };
             //Check existing of log file.
             //if (!logFile.Exists) current execution is first time execution, so create four accounts.
-            FileInfo f = new FileInfo(@"c:\" + typeof(App).Namespace + @"\" + DateTime.Now.ToString("yyyy-MM-dd") + ".log");
-            if (!f.Exists)
-            {
-                //[Local account creation] explains how to create these four accounts.
-                //CoreApplication.Exit();
-            }
-            else //if (logFile.Exists) check current user
-            {
-                //[Desktop UI control] explains how to check current user
-                //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
-                //[Launch app by correct account] explains how to navigate use logon script
-                //if (UserName == "appOperator") quiet this app, and set logonscript to run end user application as maintenance mode. and run end user application as maintenance mode at this time, it run automatically from next sign in.
-                //if (UserName == "appUser") quiet this app, and set logonscript to run end user application as normal mode. and run end user application as normal mode at this time, it run automatically from next sign in.
-            }
+            //Logging logging = new Logging();
+            //if (!logging.LogExists)
+            //{
+            //    //[Local account creation] explains how to create these four accounts.
+            //    //CoreApplication.Exit();
+            //}
+            //else //if (logFile.Exists) check current user
+            //{
+            //    //[Desktop UI control] explains how to check current user
+            //    //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
+            //    //[Launch app by correct account] explains how to navigate use logon script
+            //    //if (UserName == "appOperator") quiet this app, and set logonscript to run end user application as maintenance mode. and run end user application as maintenance mode at this time, it run automatically from next sign in.
+            //    //if (UserName == "appUser") quiet this app, and set logonscript to run end user application as normal mode. and run end user application as normal mode at this time, it run automatically from next sign in.
+            //}
         }
     }
 }
