@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <TextBlock Text="this app is nothing to happen,this is fake kiosk mode template" />
     </Grid>
 </Page>

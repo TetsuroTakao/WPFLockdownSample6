@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -63,6 +64,7 @@ namespace UWPLockdownSample
             {
                 if (rootFrame.Content == null)
                 {
+                    App_Startup();
                     // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                     // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
                     //構成します
@@ -95,6 +97,29 @@ namespace UWPLockdownSample
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();
+        }
+
+        void App_Startup()
+        {
+            //[Logging file save to Microsoft Azure] explains how to send log file of next step to Azure Blob Storage.
+            //And explains creating model of log information for easy logging
+            //LogModel message = new LogModel() { message = "check app files ..." };
+            //Check existing of log file.
+            //if (!logFile.Exists) current execution is first time execution, so create four accounts.
+            FileInfo f = new FileInfo(@"c:\" + typeof(App).Namespace + @"\" + DateTime.Now.ToString("yyyy-MM-dd") + ".log");
+            if (!f.Exists)
+            {
+                //[Local account creation] explains how to create these four accounts.
+                //CoreApplication.Exit();
+            }
+            else //if (logFile.Exists) check current user
+            {
+                //[Desktop UI control] explains how to check current user
+                //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
+                //[Launch app by correct account] explains how to navigate use logon script
+                //if (UserName == "appOperator") quiet this app, and set logonscript to run end user application as maintenance mode. and run end user application as maintenance mode at this time, it run automatically from next sign in.
+                //if (UserName == "appUser") quiet this app, and set logonscript to run end user application as normal mode. and run end user application as normal mode at this time, it run automatically from next sign in.
+            }
         }
     }
 }
