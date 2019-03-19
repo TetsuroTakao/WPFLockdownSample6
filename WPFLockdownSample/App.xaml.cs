@@ -15,7 +15,6 @@ namespace WPFLockdownSample
     {
         void App_Startup(object sender, StartupEventArgs e)
         {
-
             //[Logging and save the Log file to Microsoft Azure] explains how to send a log file
             //which is described at next step to Azure Blob Storage.
             //And explains creating model of log information for easy logging
