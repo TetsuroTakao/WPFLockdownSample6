@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFLockdownSample.Features;
+using WPFLockdownSample.Models;
 
 namespace WPFLockdownSample
 {
@@ -13,30 +15,34 @@ namespace WPFLockdownSample
     /// </summary>
     public partial class App : Application
     {
+        DataAccessLayer dataAccessLayer = new DataAccessLayer();
         void App_Startup(object sender, StartupEventArgs e)
         {
-            //[Logging and save the Log file to Microsoft Azure] explains how to send a log file
-            //which is described at next step to Azure Blob Storage.
-            //And explains creating model of log information for easy logging
-            //LogModel message = new LogModel() { message = "check app files ..." };
-            //Check existing of log file.
-            //Logging logging = new Logging();
-            //if (logging.ReadLogs().Count == 0)
-            //{
-            //    //[Local account creation] explains how to create these four accounts.
-            //    //And how to navigate use logon script
-            //    //CoreApplication.Exit();
-            //}
-            //else //if (logFile.Exists) check current user
-            //{
-            //    //[Desktop UI control] explains how to check current user
-            //    //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
-            //    //if (UserName == "appOperator") quiet this app. This account has specific automatic
-            //run application when this account sign in.
-
-            //    //if (UserName == "appUser") quiet this app. This account has specific automatic
-            //run application when this account sign in.
-            //}
+            List<Log> logs = new List<Log>();
+            Log log = new Log() { Message = "checkking app files ...", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
+            logs.Add(log);
+            if (dataAccessLayer.ReadLogs().Count == 0)
+            {
+                log = new Log() { Message = "this exesution is first time.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
+                logs.Add(log);
+                //[Local account creation] explains how to create these four accounts.
+                //And how to navigate use logon script
+                //CoreApplication.Exit();
+            }
+            else
+            {
+                log = new Log() { Message = "this execution has run on this device more than twice.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
+                logs.Add(log);
+                //[Desktop UI control] explains how to check current user
+                //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
+                //if (UserName == "appOperator") quiet this app. This account has specific automatic
+                //run application when this account sign in.
+                //if (UserName == "appUser") quiet this app. This account has specific automatic
+                //run application when this account sign in.
+            }
+            log = new Log() { Message = "checkking app files is complete.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
+            logs.Add(log);
+            dataAccessLayer.AppendWriteLogs(logs);
         }
     }
 }
