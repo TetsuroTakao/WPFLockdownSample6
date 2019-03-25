@@ -9,7 +9,7 @@ using WPFLockdownSample.Models;
 
 namespace WPFLockdownSample.Features
 {
-    public class DataAccessLayer
+    public partial class DataAccessLayer
     {
         public FileInfo LogFile { get; private set; }
         const string appFilesPath = @"c:\WFPLockdownSample";

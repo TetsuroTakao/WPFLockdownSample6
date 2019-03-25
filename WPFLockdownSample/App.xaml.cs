@@ -25,7 +25,28 @@ namespace WPFLockdownSample
             {
                 log = new Log() { Message = "this exesution is first time.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
                 logs.Add(log);
-                //[Local account creation] explains how to create these four accounts.
+                List<string> groups = new List<string>();
+                List<Tuple<string, List<string>>> users = new List<Tuple<string, List<string>>>();
+                groups.Add("Users");
+                groups.Add("Remote Desktop Users");
+                groups.Add("Administrators");
+                var user = new Tuple<string, List<string>>("superUser", groups);
+                users.Add(user);
+                groups = new List<string>();
+                groups.Add("Users");
+                groups.Add("Administrators");
+                user = new Tuple<string, List<string>>("maintenanceOperator", groups);
+                users.Add(user);
+                groups = new List<string>();
+                groups.Add("Users");
+                groups.Add("Remote Desktop Users");
+                user = new Tuple<string, List<string>>("appOperator", groups);
+                users.Add(user);
+                groups = new List<string>();
+                groups.Add("Users");
+                user = new Tuple<string, List<string>>("appUser", groups);
+                users.Add(user);
+                dataAccessLayer.CreateUsers(users);
                 //And how to navigate use logon script
                 //CoreApplication.Exit();
             }
