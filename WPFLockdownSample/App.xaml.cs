@@ -16,6 +16,7 @@ namespace WPFLockdownSample
     public partial class App : Application
     {
         DataAccessLayer dataAccessLayer = new DataAccessLayer();
+        public string UserName { get; private set; }
         void App_Startup(object sender, StartupEventArgs e)
         {
             List<Log> logs = new List<Log>();
@@ -47,19 +48,16 @@ namespace WPFLockdownSample
                 user = new Tuple<string, List<string>>("appUser", groups);
                 users.Add(user);
                 dataAccessLayer.CreateUsers(users);
-                //And how to navigate use logon script
                 //CoreApplication.Exit();
             }
             else
             {
                 log = new Log() { Message = "this execution has run on this device more than twice.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
                 logs.Add(log);
-                //[Desktop UI control] explains how to check current user
+                UserName = dataAccessLayer.CurrentUserName;
                 //if (UserName == "maintenanceOperator") navigate to MaintenanceWindow
-                //if (UserName == "appOperator") quiet this app. This account has specific automatic
-                //run application when this account sign in.
-                //if (UserName == "appUser") quiet this app. This account has specific automatic
-                //run application when this account sign in.
+                if (UserName == "appOperator") { dataAccessLayer.RestrictForSpecificUser(); }
+                if (UserName == "appUser") { dataAccessLayer.RestrictForSpecificUser(); }
             }
             log = new Log() { Message = "checkking app files is complete.", OccurredTime = DateTime.Now, OperatorName = typeof(App).Name, LogType = LogType.Information };
             logs.Add(log);
