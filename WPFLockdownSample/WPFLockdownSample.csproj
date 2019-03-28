@@ -69,6 +69,8 @@
     </Compile>
     <Compile Include="Features\AccountManager.cs" />
     <Compile Include="Features\Logging.cs" />
+    <Compile Include="Features\ProcessController.cs" />
+    <Compile Include="Features\UIController.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

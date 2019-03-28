@@ -11,6 +11,7 @@ namespace WPFLockdownSample.Features
 {
     public partial class DataAccessLayer
     {
+        public static DataAccessLayer Currentfacade { get; private set; }
         public FileInfo LogFile { get; private set; }
         const string appFilesPath = @"c:\WFPLockdownSample";
         DirectoryInfo logFolder = new DirectoryInfo(appFilesPath);
@@ -19,6 +20,7 @@ namespace WPFLockdownSample.Features
             LogFile = new FileInfo(
                     appFilesPath + @"\" + DateTime.Now.ToString("yyyyMMdd") + "logs.log"
                 );
+            Currentfacade = this;
         }
         public void AppendWriteLogs(List<Log> logs, bool reverse = true)
         {
@@ -41,6 +43,13 @@ namespace WPFLockdownSample.Features
                 logs = JsonConvert.DeserializeObject<List<Log>>(jsonstring);
             }
             return logs;
+        }
+        public void Logging(string message)
+        {
+            List<Log> logs = new List<Log>();
+            Log log = new Log() { LogType = LogType.Information, Message = message, OccurredTime = DateTime.Now, OperatorName = GetType().Name };
+            logs.Add(log);
+            AppendWriteLogs(logs);
         }
     }
 }

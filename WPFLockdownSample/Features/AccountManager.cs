@@ -164,61 +164,18 @@ namespace WPFLockdownSample.Features
             }
             return result;
         }
-        public List<Log> RestrictForSpecificUser()
+        public bool RestrictForSpecificUser()
         {
-            List<Log> result = new List<Log>(); 
-            Log log = new Log();
-            log.LogType = LogType.Information;
-            log.Message = string.Format("User[{0}] is logon : ", CurrentUserName);
-            log.OccurredTime = DateTime.Now;
-            log.OperatorName = GetType().Name;
-            result.Add(log);
+            DataAccessLayer.Currentfacade.Logging(string.Format("User[{0}] is logon : ", CurrentUserName));
             if (CurrentUserName == "appOperator" || CurrentUserName == "appUser")
             {
-                string current = Environment.CurrentDirectory;
-                DirectoryInfo d = new DirectoryInfo(current);
-                RegistryKey regkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                regkey.SetValue("", Environment.CommandLine);
-                regkey.Close();
-                log = new Log();
-                log.LogType = LogType.Information;
-                log.Message = string.Format("Set logon script for user[{0}] : ", CurrentUserName);
-                log.OccurredTime = DateTime.Now;
-                log.OperatorName = GetType().Name;
-                result.Add(log);
-
-                regkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies", true);
-                regkey.CreateSubKey("Explorer");
-                regkey.Close();
-                regkey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer", true);
-                regkey.SetValue("NoDesktop", 1, RegistryValueKind.DWord);
-                regkey.Close();
-                log = new Log();
-                log.LogType = LogType.Information;
-                log.Message = string.Format("Clear desktop of user[{0}] : ", CurrentUserName);
-                log.OccurredTime = DateTime.Now;
-                log.OperatorName = GetType().Name;
-                result.Add(log);
-
-                Process[] processes = Process.GetProcesses();
-                foreach (Process p in processes)
-                {
-                    try
-                    {
-                        if (p.ProcessName == "explore") p.Kill();
-                    }
-                    catch (Exception ex)
-                    {
-                        log = new Log();
-                        log.LogType = LogType.Information;
-                        log.Message = string.Format("Fault killing process Windows explore : " + ex.Message);
-                        log.OccurredTime = DateTime.Now;
-                        log.OperatorName = GetType().Name;
-                        result.Add(log);
-                    }
-                }
+                new ProcessController().KillProcess();
+                DataAccessLayer.Currentfacade.Logging(string.Format("Set logon script for user[{0}] : ", CurrentUserName));
+                new ProcessController().SetLogonScript(string.Empty);
+                DataAccessLayer.Currentfacade.Logging(string.Format("Clear desktop of user[{0}] : ", CurrentUserName));
+                new UIController().CollapseDesktopIcon();
             }
-            return result;
+            return true;
         }
     }
 }
